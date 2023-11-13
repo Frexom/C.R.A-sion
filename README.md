@@ -26,7 +26,7 @@
 - [x] Comprendre les interactions entre les end points d'un jeu robotique réseau
 - [x] Définir un groupe de 3-4 personnes
 - [x] Créer un projet github et partager les droits à toute l'équipe
-- [ ] Partir de l'API, définir tous les use cases des utilisateurs joueurs sur un readme
+- [x] Partir de l'API, définir tous les use cases des utilisateurs joueurs sur un readme
 - [ ] Faire une maquette à insérer dans votre readme (figma, paint, powerpoint ...)
 - [ ] Lire le champs des possibles de votre arbitre sur tutos.jusdeliens
 - [ ] Définir et répartir les tâches dans un kanban (trello ou issues sur github)
