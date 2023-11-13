@@ -3,9 +3,8 @@
 C.R.A-sion : Crate Mansion is a multiplayer code-controlled game using the [PytactX API](https://jusdeliens.com/). In this game, you'll find yourself in a mansion infested by greenish hostile monsters. To help you survive is this chaos, your best friends, the crates, lie in the rooms of the mansion. If you open one of them, you'll find a random weapon that will give you a great advantage over your opponents, which strive to survive in the mansion just like you do.
 
 ## Mock-up :
-Here what the game could look like :
-[Mock-up image](doc/maquette.png "Game mock-up")
-<img width="500" height="281" src="doc/maquette.png">
+Here what the game could look like :<br>
+<img width="500" height="281" src="doc/maquette.png" align="center">
 
 - In pink, the players.
 - In green, the monsters.
