@@ -6,7 +6,10 @@
 3. En tant que joueur, je peux tirer
 4. En tant que joueur, je peux ramasser une crate/arme
 5. En tant que joueur, je peux gagner ou perdre la partie
-6. E
+6. En tant que joueur, je peux être bloqué par un mur
+7. En tant que joueur, je peux mourir
+8. En tant que joueur, je peux tuer des ennemis
+9. En tant que joueur, je peux tuer d'autres joueurs
 
 ## Carte
 1. En tant que carte, je peux être générée
