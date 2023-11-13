@@ -5,6 +5,8 @@
 2. En tant que joueur, je peux me déplacer
 3. En tant que joueur, je peux tirer
 4. En tant que joueur, je peux ramasser une crate/arme
+5. En tant que joueur, je peux gagner ou perdre la partie
+6. E
 
 ## Carte
 1. En tant que carte, je peux être générée

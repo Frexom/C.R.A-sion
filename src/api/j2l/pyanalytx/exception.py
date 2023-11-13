@@ -1,18 +1,19 @@
 import inspect
 import time
 
+
 def toBeImplemented(message=None):
     """
     Raise an exception NotImplementedError
-    To be used in interface method bodies or 
+    To be used in interface method bodies or
     anywhere else where a todo is required
     before use.
     """
     stack = inspect.stack()
-    if ( message == None ):
+    if message == None:
         message = ""
-    elif (len(message) > 0 and message[0] != "\n"):
-        message = "\n" + message        
+    elif len(message) > 0 and message[0] != "\n":
+        message = "\n" + message
     raise NotImplementedError(f"🚧 {stack[1][3]}() not implemented yet!{message}")
 
 
@@ -28,6 +29,7 @@ def retry(maxRetries=1, sleepBetween=1):
         raise Exception
     ```
     """
+
     def retry_decorator(func):
         def __wrapper(*args, **kwargs):
             for _ in range(maxRetries):
@@ -35,5 +37,7 @@ def retry(maxRetries=1, sleepBetween=1):
                     func(*args, **kwargs)
                 except:
                     time.sleep(sleepBetween)
+
         return __wrapper
+
     return retry_decorator
