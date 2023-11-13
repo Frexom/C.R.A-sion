@@ -2,7 +2,7 @@
 name = "cra-sion"
 version = "0.0.1"
 description = "A client-server based game inspired by Super Crate Box."
-authors = ["Frexom <imfrexom@gmail.com>"]
+authors = ["Frexom <imfrexom@gmail.com>", "YamaXuna <>"]
 license = "GNU AGPLv3"
 readme = "README.md"
 packages = [{include = "cra_sion"}]
@@ -10,6 +10,10 @@ packages = [{include = "cra_sion"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+coverage = "^7.3.2"
 
 [build-system]
 requires = ["poetry-core"]
