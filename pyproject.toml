@@ -9,6 +9,14 @@ packages = [{include = "cra_sion"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+python-dotenv = "^1.0.0"
+paho-mqtt = "^1.6.1"
+urllib3 = "^2.1.0"
+pillow = "^10.1.0"
+idna = "^3.4"
+charset-normalizer = "^3.3.2"
+certifi = "^2023.7.22"
+requests = "^2.31.0"
 
 
 [tool.poetry.group.dev.dependencies]

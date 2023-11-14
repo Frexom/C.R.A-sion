@@ -68,9 +68,9 @@ You can also run the `coverage.py` module using the following commands :
 - [x] Définir un groupe de 3-4 personnes
 - [x] Créer un projet github et partager les droits à toute l'équipe
 - [x] Partir de l'API, définir tous les use cases des utilisateurs joueurs sur un readme
-- [ ] Faire une maquette à insérer dans votre readme (figma, paint, powerpoint ...)
-- [ ] Lire le champs des possibles de votre arbitre sur tutos.jusdeliens
-- [ ] Définir et répartir les tâches dans un kanban (trello ou issues sur github)
+- [x] Faire une maquette à insérer dans votre readme (figma, paint, powerpoint ...)
+- [x] Lire le champs des possibles de votre arbitre sur tutos.jusdeliens
+- [x] Définir et répartir les tâches dans un kanban (trello ou issues sur github)
 - [ ] Rédiger le diagramme de séquence pour chaque use case
 
 ### 2023-11-14 TD

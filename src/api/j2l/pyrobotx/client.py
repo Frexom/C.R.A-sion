@@ -24,7 +24,6 @@ __libdir__ = os.path.dirname(__workdir__)
 sys.path.append(__libdir__)
 
 os.system("export LANG=en_US.UTF-8")
-os.system("pip install paho-mqtt pillow requests")
 
 import copy
 import io
