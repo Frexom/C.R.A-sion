@@ -1,12 +1,13 @@
+import os
+
 import j2l.pytactx.agent as pytactx
 from crasion import Survivor
 from dotenv import load_dotenv
-import os
 
 load_dotenv()
 
 agent = pytactx.Agent(
-    playerId=os.environ["PLAYER_ID"],
+    playerId="feur",
     arena=os.environ["ARENA"],
     username=os.environ["JDL_USERNAME"],
     password=os.environ["JDL_PASSWORD"],
@@ -14,6 +15,12 @@ agent = pytactx.Agent(
     verbosity=2,
 )
 print("zefbjhefgvgrfheilgyto")
+pos = [2, int(agent.gridRows / 2)]
 while True:
+    print(pos)
+    print(agent.x, agent.y)
+    agent.moveTowards(*pos)
     agent.update()
-    agent.lookAt((agent.dir + 1) % 4)
+    if agent.x == pos[0] and agent.y == pos[1]:
+        x = 1 if agent.x == 30 else 30
+        pos[0] = x
