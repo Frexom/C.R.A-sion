@@ -1,4 +1,5 @@
 import os
+import time
 from random import randint
 
 from dotenv import load_dotenv
@@ -40,10 +41,13 @@ class MyReferee(pytactx.Agent):
         )
         self.ruleArena("preview", "icon.png")
         self.ruleArena("bgImg", "floor.png")
-        self.ruleArena("mapImgs", ["", "crate.png"])
+        self.ruleArena("mapImgs", ["", "crate.png", "super_crate.png"])
         self.update()
 
     def spawn_random_crate(self):
+        print("Spawning crate!")
+        is_super = randint(1, 10)
+
         x = randint(0, GRID_ROWS - 1)
         y = randint(0, GRID_COLUMNS - 1)
 
@@ -51,11 +55,13 @@ class MyReferee(pytactx.Agent):
             x = randint(0, GRID_ROWS - 1)
             y = randint(0, GRID_COLUMNS - 1)
 
-        self.map[x][y] = 1
+        self.map[x][y] = 1 + int(is_super == 1)
         self.ruleArena("map", self.map)
         self.update()
+        return is_super == 1
 
 
 if __name__ == "__main__":
     agent = MyReferee()
-    agent.spawn_random_crate()
+    while not agent.spawn_random_crate():
+        time.sleep(3)
