@@ -1,8 +1,9 @@
 import os
 
-import j2l.pytactx.agent as pytactx
-from crasion import Survivor
 from dotenv import load_dotenv
+
+import src.api.j2l.pytactx.agent as pytactx
+from src.api.crasion import Survivor
 
 load_dotenv()
 
