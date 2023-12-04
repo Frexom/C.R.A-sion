@@ -5,7 +5,6 @@ description = "A client-server based game inspired by Super Crate Box."
 authors = ["Frexom <imfrexom@gmail.com>", "YamaXuna <>"]
 license = "GNU AGPLv3"
 readme = "README.md"
-packages = [{include = "cra_sion"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -17,6 +16,7 @@ idna = "^3.4"
 charset-normalizer = "^3.3.2"
 certifi = "^2023.7.22"
 requests = "^2.31.0"
+loguru = "^0.7.2"
 
 
 [tool.poetry.group.dev.dependencies]

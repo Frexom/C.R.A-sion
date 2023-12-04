@@ -15,12 +15,12 @@ agent = pytactx.Agent(
     verbosity=2,
 )
 print("zefbjhefgvgrfheilgyto")
-pos = [2, int(agent.gridRows / 2)]
+pos = [1, int(agent.gridRows / 2)]
 while True:
     print(pos)
     print(agent.x, agent.y)
     agent.moveTowards(*pos)
     agent.update()
     if agent.x == pos[0] and agent.y == pos[1]:
-        x = 1 if agent.x == 30 else 30
+        x = 0 if agent.x == 39 else 39
         pos[0] = x
