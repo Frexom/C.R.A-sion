@@ -41,7 +41,7 @@ class MyReferee(pytactx.Agent):
 
         self.ruleArena("gridRows", 30)
         self.ruleArena("gridColumns", 40)
-        path = "http://raw.githubusercontent.com/Frexom/C.R.A-sion/add-walls-to-the-map/res/"
+        path = "http://raw.githubusercontent.com/Frexom/C.R.A-sion/main/res/"
         self.ruleArena("preview", path + "icon.png")
         self.ruleArena("bgImg", path + "floor.png")
         self.ruleArena(
