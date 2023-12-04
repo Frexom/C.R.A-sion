@@ -1,11 +1,12 @@
 import j2l.pytactx.agent as pytactx
 from crasion import Survivor
 from dotenv import load_dotenv
+from random import randint
 import os
 
 load_dotenv()
 
-agent = pytactx.Agent(
+agent = Survivor( 
     playerId=os.environ["PLAYER_ID"],
     arena=os.environ["ARENA"],
     username=os.environ["JDL_USERNAME"],
@@ -13,7 +14,9 @@ agent = pytactx.Agent(
     server="mqtt.jusdeliens.com",
     verbosity=2,
 )
-print("zefbjhefgvgrfheilgyto")
 while True:
-    agent.update()
-    agent.lookAt((agent.dir + 1) % 4)
+  agent.move(randint(-1, 2) , randint(-1, 2))
+  #agent.fire(True)
+  #agent.lookAt(2)
+  #print(agent.map)
+  agent.update()
