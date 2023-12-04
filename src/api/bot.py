@@ -1,5 +1,6 @@
 import os
 
+import keyboard
 from dotenv import load_dotenv
 
 import src.api.j2l.pytactx.agent as pytactx
@@ -15,13 +16,22 @@ agent = pytactx.Agent(
     server="mqtt.jusdeliens.com",
     verbosity=2,
 )
-print("zefbjhefgvgrfheilgyto")
-pos = [1, int(agent.gridRows / 2)]
+# pos = [1, int(agent.gridRows / 2)]
+# while True:
+#     print(pos)
+#     print(agent.x, agent.y)
+#     agent.moveTowards(*pos)
+#     agent.update()
+#     if agent.x == pos[0] and agent.y == pos[1]:
+#         x = 0 if agent.x == 39 else 39
+#         pos[0] = x
 while True:
-    print(pos)
-    print(agent.x, agent.y)
-    agent.moveTowards(*pos)
+    if keyboard.is_pressed("z"):
+        agent.moveTowards(agent.x + 0, agent.y - 1)
+    if keyboard.is_pressed("q"):
+        agent.moveTowards(agent.x - 1, agent.y + 0)
+    if keyboard.is_pressed("s"):
+        agent.moveTowards(agent.x + 0, agent.y + 1)
+    if keyboard.is_pressed("d"):
+        agent.moveTowards(agent.x + 1, agent.y + 0)
     agent.update()
-    if agent.x == pos[0] and agent.y == pos[1]:
-        x = 0 if agent.x == 39 else 39
-        pos[0] = x

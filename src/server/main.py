@@ -1,5 +1,6 @@
 import os
 from random import randint
+from time import time
 
 from dotenv import load_dotenv
 from loguru import logger
@@ -11,7 +12,8 @@ load_dotenv()
 
 class MyReferee(pytactx.Agent):
     map: list[list[int]]
-    mapBackup: list[list[int]]
+    concentration: int
+    last_map_reset: time
 
     def __init__(self):
         super().__init__(
@@ -22,21 +24,30 @@ class MyReferee(pytactx.Agent):
             server="mqtt.jusdeliens.com",
             verbosity=2,
         )
+        self.concentration = 10
+        self.map = []
+        self.last_map_reset = time()
+
+        self.rulePlayer(self.clientId, "x", 1000)
+        self.rulePlayer(self.clientId, "y", 1000)
         self.update()
 
-        self.map = []
         self.init_map_values()
-        self.add_walls(10)
+        if 3 not in self.game["map"][int(self.gridRows / 2)]:
+            self.add_walls()
 
     def init_map_values(self):
         print("Initiating arena!")
 
-        self.ruleArena("gridRows", self.gridRows)
-        self.ruleArena("gridColumns", self.gridColumns)
+        self.ruleArena("gridRows", 30)
+        self.ruleArena("gridColumns", 40)
         path = "http://raw.githubusercontent.com/Frexom/C.R.A-sion/add-walls-to-the-map/res/"
         self.ruleArena("preview", path + "icon.png")
         self.ruleArena("bgImg", path + "floor.png")
-        self.ruleArena("mapImgs", ["", path + "crate.png", path + "super_crate.png"])
+        self.ruleArena(
+            "mapImgs",
+            ["", path + "crate.png", path + "super_crate.png", path + "wall.png"],
+        )
         self.ruleArena("mapFriction", [0, 0, 0, 1])
 
         self.update()
@@ -47,7 +58,7 @@ class MyReferee(pytactx.Agent):
         counter = 0
         for x in range(len(self.map)):
             for y in range(len(self.map[0])):
-                self.map[x][y] = 0 if self.map[x][y] == 3 else 0
+                self.map[x][y] = 0 if self.map[x][y] == 3 else self.map[x][y]
 
     def invalid(self, x, y):
         if x <= 0 or x >= self.gridRows - 1:
@@ -58,11 +69,13 @@ class MyReferee(pytactx.Agent):
             return True
         return False
 
-    def add_walls(self, concentration: int):
-        logger.info(f"Generating walls with concentration {concentration}")
-        self.clear_walls()
+    def add_walls(
+        self,
+    ):
+        logger.info(f"Generating walls with concentration {self.concentration}")
+        self.last_map_reset = time()
 
-        for i in range(concentration):
+        for i in range(self.concentration):
             initX = randint(0 + 5, self.gridRows - 6)
             initY = randint(0 + 5, self.gridColumns - 6)
             # Vertical or not, direction
@@ -104,14 +117,14 @@ class MyReferee(pytactx.Agent):
         return counter
 
     def spawn_random_crate(self):
-        is_super = randint(1, 10)
+        is_super = randint(1, 30)
 
-        x = randint(0, self.gridRows - 1)
-        y = randint(0, self.gridColumns - 1)
+        x = randint(2, self.gridRows - 3)
+        y = randint(2, self.gridColumns - 3)
 
         while self.map[x][y] != 0:
-            x = randint(0, self.gridRows - 1)
-            y = randint(0, self.gridColumns - 1)
+            x = randint(2, self.gridRows - 3)
+            y = randint(2, self.gridColumns - 3)
 
         self.map[x][y] = 1 + int(is_super == 1)
         self.ruleArena("map", self.map)
@@ -122,8 +135,14 @@ class MyReferee(pytactx.Agent):
     def check_player_on_crate(self):
         for player, data in self.range.items():
             cell = self.map[data["y"]][data["x"]]
-            if cell != 0:
-                # Give player weapon
+            if cell in [1, 2]:
+                if cell == 2:
+                    # Legendary crate!
+                    self.clear_walls()
+                    self.add_walls()
+                else:
+                    # Give player weapon
+                    pass
                 self.map[data["y"]][data["x"]] = 0
                 logger.info(player + " has collected a crate!")
         self.ruleArena("map", self.map)
@@ -132,17 +151,21 @@ class MyReferee(pytactx.Agent):
     def infinite_ammos(self):
         for player in self.range.keys():
             self.rulePlayer(player, "ammo", 10000)
-        agent.update()
+        self.update()
 
     def gameloop(self):
-        number_of_crates = int((agent.gridRows * agent.gridColumns) / 175)
+        number_of_crates = int((self.gridRows * self.gridColumns) / 175)
         logger.info(f"Chosen number of crates : {number_of_crates}")
 
         while True:
-            if agent.count_map_crates() < number_of_crates:
-                agent.spawn_random_crate()
-                agent.infinite_ammos()
-            agent.check_player_on_crate()
+            if self.count_map_crates() < number_of_crates:
+                self.spawn_random_crate()
+                self.infinite_ammos()
+            if time() - self.last_map_reset > 120:
+                self.clear_walls()
+                self.add_walls()
+
+            self.check_player_on_crate()
 
 
 if __name__ == "__main__":
