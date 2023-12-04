@@ -33,9 +33,7 @@ class MyReferee(pytactx.Agent):
 
         self.ruleArena("gridRows", self.gridRows)
         self.ruleArena("gridColumns", self.gridColumns)
-        path = (
-            "https://raw.githubusercontent.com/Frexom/C.R.A-sion/init-arena-params/res/"
-        )
+        path = "http://raw.githubusercontent.com/Frexom/C.R.A-sion/add-walls-to-the-map/res/"
         self.ruleArena("preview", path + "icon.png")
         self.ruleArena("bgImg", path + "floor.png")
         self.ruleArena("mapImgs", ["", path + "crate.png", path + "super_crate.png"])
@@ -136,11 +134,17 @@ class MyReferee(pytactx.Agent):
             self.rulePlayer(player, "ammo", 10000)
         agent.update()
 
+    def gameloop(self):
+        number_of_crates = int((agent.gridRows * agent.gridColumns) / 175)
+        logger.info(f"Chosen number of crates : {number_of_crates}")
+
+        while True:
+            if agent.count_map_crates() < number_of_crates:
+                agent.spawn_random_crate()
+                agent.infinite_ammos()
+            agent.check_player_on_crate()
+
 
 if __name__ == "__main__":
     agent = MyReferee()
-    while True:
-        if agent.count_map_crates() < 3:
-            agent.spawn_random_crate()
-            agent.infinite_ammos()
-        agent.check_player_on_crate()
+    agent.gameloop()
