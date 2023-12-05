@@ -27,6 +27,8 @@ class MyReferee(pytactx.Agent):
         self.concentration = 10
         self.map = []
         self.last_map_reset = time()
+        self.weapons = [1, 3, 4, 5]
+        self.ammos = [1000, 200, 10, 10000]
 
         self.rulePlayer(self.clientId, "x", 1000)
         self.rulePlayer(self.clientId, "y", 1000)
@@ -49,6 +51,9 @@ class MyReferee(pytactx.Agent):
             ["", path + "crate.png", path + "super_crate.png", path + "wall.png"],
         )
         self.ruleArena("mapFriction", [0, 0, 0, 1])
+        self.ruleArena("mapHit", [0, 0, 0, 0])
+        self.ruleArena("mapBreakable", [False, False, False, False])
+        self.ruleArena("ownerFire", [False, False, False, False, False, False])
 
         self.update()
         self.map = self.game["map"]
@@ -140,19 +145,19 @@ class MyReferee(pytactx.Agent):
             if cell in [1, 2]:
                 if cell == 2:
                     # Legendary crate!
+                    self.rulePlayer(player, "weapon", 2)
+                    self.rulePlayer(player, "ammo", 20)
+
                     self.clear_walls()
                     self.add_walls()
                 else:
-                    # Give player weapon
-                    pass
+                    chosen = randint(0, len(self.weapons) - 1)
+                    self.rulePlayer(player, "weapon", self.weapons[chosen])
+                    self.rulePlayer(player, "ammo", self.ammos[chosen])
+
                 self.map[data["y"]][data["x"]] = 0
                 logger.info(player + " has collected a crate!")
         self.ruleArena("map", self.map)
-        self.update()
-
-    def infinite_ammos(self):
-        for player in self.range.keys():
-            self.rulePlayer(player, "ammo", 10000)
         self.update()
 
     def gameloop(self):
@@ -162,7 +167,7 @@ class MyReferee(pytactx.Agent):
         while True:
             if self.count_map_crates() < number_of_crates:
                 self.spawn_random_crate()
-                self.infinite_ammos()
+
             if time() - self.last_map_reset > 120:
                 self.clear_walls()
                 self.add_walls()
