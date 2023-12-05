@@ -129,7 +129,9 @@ class MyReferee(pytactx.Agent):
         self.map[x][y] = 1 + int(is_super == 1)
         self.ruleArena("map", self.map)
         self.update()
-        logger.info(f"Spawned {'legendary ' if is_super else ''}crate at X={x}, Y={y}")
+        logger.info(
+            f"Spawned {'legendary ' if is_super == 1 else ''}crate at X={x}, Y={y}"
+        )
         return is_super == 1
 
     def check_player_on_crate(self):
