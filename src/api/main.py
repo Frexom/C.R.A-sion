@@ -15,8 +15,8 @@ agent = Survivor(
     verbosity=2,
 )
 while True:
-  agent.move(randint(-1, 2) , randint(-1, 2))
-  #agent.fire(True)
+  #agent.move(randint(-1, 2) , randint(-1, 2))
+  agent.fire(True)
   #agent.lookAt(2)
   #print(agent.map)
   agent.update()
