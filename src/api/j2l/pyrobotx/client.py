@@ -24,6 +24,7 @@ __libdir__ = os.path.dirname(__workdir__)
 sys.path.append(__libdir__)
 
 os.system("export LANG=en_US.UTF-8")
+os.system("pip install paho-mqtt pillow requests")
 
 import copy
 import io
@@ -1311,43 +1312,6 @@ class OvaClientMqtt(IRobot):
             self.connect()
         self.__events.onUpdated()
 
-        # Tx requests
-        dtTx = (datetime.now() - self.__prevTx).total_seconds() * 1000
-        if dtTx > self.__dtTxToWait:
-            self.__prevTx = datetime.now()
-            robotReqTopicsToPub = [self.__topicPlayerRequest]
-            if self.__useProxy == False:
-                robotReqTopicsToPub.append(self.__topicRobotRequest)
-            reqsToTx = [
-                (self.__robotActuatorsRequest.toDict(), robotReqTopicsToPub),
-                (self.__reqPlayer, [self.__topicPlayerRequest]),
-                (self.__reqArena, [self.__topicArenaRequest]),
-            ]
-            for req in reqsToTx:
-                request, topicsToPub = req
-                if len(request) == 0:
-                    continue
-                payloadStr = json.dumps(request)
-                payloadBytes = str.encode(payloadStr)
-                for topic in topicsToPub:
-                    anx.debug(
-                        "📡 Tx "
-                        + str(self.__id)
-                        + " to topic "
-                        + str(topic)
-                        + ": "
-                        + str(len(payloadBytes))
-                        + " byte(s)"
-                    )
-                    self.__client.publish(topic, payloadBytes)
-
-            self.__reqArena = {}
-            self.__reqPlayer = {}
-            self.__robotActuatorsRequest.reset()
-
-        if enableSleep:
-            time.sleep(DefaultClientSettings.dtSleepUpdate / 1000)
-
         # Rx states and stream
         if self.__rxFromRobot:
             self.__rxFromRobot = False
@@ -1355,7 +1319,7 @@ class OvaClientMqtt(IRobot):
             if self.__isConnectedToRobot == False:
                 self.__isConnectedToRobot = True
                 self.__events.onRobotConnected()
-            # Swap buf img and sensor states
+            # Swap bug img and sensor states
             if self.__cameraReader.update() > 0:
                 self.__events.onImageReceived(self.__cameraReader.getImage())
             try:
@@ -1400,6 +1364,40 @@ class OvaClientMqtt(IRobot):
             self.__isConnectedToArena = False
             self.__events.onArenaDisconnected(self.__arena)
 
+        # Tx requests
+        dtTx = (datetime.now() - self.__prevTx).total_seconds() * 1000
+        if dtTx > self.__dtTxToWait:
+            self.__prevTx = datetime.now()
+            robotReqTopicsToPub = [self.__topicPlayerRequest]
+            if self.__useProxy == False:
+                robotReqTopicsToPub.append(self.__topicRobotRequest)
+            reqsToTx = [
+                (self.__robotActuatorsRequest.toDict(), robotReqTopicsToPub),
+                (self.__reqPlayer, [self.__topicPlayerRequest]),
+                (self.__reqArena, [self.__topicArenaRequest]),
+            ]
+            for req in reqsToTx:
+                request, topicsToPub = req
+                if len(request) == 0:
+                    continue
+                payloadStr = json.dumps(request)
+                payloadBytes = str.encode(payloadStr)
+                for topic in topicsToPub:
+                    anx.debug(
+                        "📡 Tx "
+                        + str(self.__id)
+                        + " to topic "
+                        + str(topic)
+                        + ": "
+                        + str(len(payloadBytes))
+                        + " byte(s)"
+                    )
+                    self.__client.publish(topic, payloadBytes)
+
+            self.__reqArena = {}
+            self.__reqPlayer = {}
+            self.__robotActuatorsRequest.reset()
+
         # Ping server
         dtPing = (datetime.now() - self.__prevPing).total_seconds() * 1000
         if dtPing > DefaultClientSettings.dtPing:
@@ -1410,6 +1408,9 @@ class OvaClientMqtt(IRobot):
             for topic in topicsToPub:
                 anx.debug("📡 Ping " + str(self.__id))
                 self.__client.publish(topic, payloadBytes)
+
+        if enableSleep:
+            time.sleep(DefaultClientSettings.dtSleepUpdate / 1000)
 
     def getRobotId(self) -> str:
         return self.__idRobot

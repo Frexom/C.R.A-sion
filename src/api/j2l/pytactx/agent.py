@@ -31,6 +31,7 @@ import json
 import time
 import traceback
 from datetime import datetime
+from getpass import getpass
 from random import randint
 from threading import Timer
 from typing import Any, Callable
@@ -513,13 +514,13 @@ class Agent(IAgent):
         if username == None:
             username = input("🧑 username: ")
         if password == None:
-            password = input("🔑 password: ")
+            password = getpass("🔑 password: ")
 
         if welcomePrint:
             passwordParam = (base64.b64encode(password.encode("utf-8"))).decode("utf-8")
             print("Hi there 👋")
             print(
-                "To see the arena in your web browser 🎮, go to 👉 https://play.jusdeliens.com/?viewer=pytactx&arena="
+                "To see the arena in your web browser 🎮, go to 👉 https://play.jusdeliens.com/?viewer=tactx&arena="
                 + str(arena)
                 + "&url="
                 + str(server)
@@ -527,6 +528,8 @@ class Agent(IAgent):
                 + str(username)
                 + "&pwd="
                 + str(passwordParam)
+                + "&pseudo="
+                + str(playerId)
             )
             print(
                 "To learn more about how to dev your agent 💡, go to 👉 https://tutos.jusdeliens.com"
@@ -754,7 +757,7 @@ class Agent(IAgent):
         if "fire" in self.__playerReqBuf and self.__firepath != None:
             x = self.x
             y = self.y
-            gridDim = max((self.gridColumns, self.gridRows))
+            gridDim = self.gridColumns * self.gridRows
             t = 0
             pts = []
             while (
@@ -1010,12 +1013,12 @@ class AgentFr(IAgentFr):
         if username == None:
             username = input("🧑 identifiant: ")
         if password == None:
-            password = input("🔑 mot de passe: ")
+            password = getpass("🔑 mot de passe: ")
         if welcomePrint:
             passwordParam = (base64.b64encode(password.encode("utf-8"))).decode("utf-8")
             print("Hey 👋")
             print(
-                "Pour visualiser l'arene de jeu 🎮, allez sur 👉 https://play.jusdeliens.com/?viewer=pytactx&arena="
+                "Pour visualiser l'arene de jeu 🎮, allez sur 👉 https://play.jusdeliens.com/?viewer=tactx&arena="
                 + str(arene)
                 + "&url="
                 + str(url)
@@ -1023,6 +1026,8 @@ class AgentFr(IAgentFr):
                 + str(username)
                 + "&pwd="
                 + str(passwordParam)
+                + "&pseudo="
+                + str(nom)
             )
             print(
                 "Pour en savoir plus sur votre agent 💡, rdv sur 👉 https://tutos.jusdeliens.com"

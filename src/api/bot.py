@@ -34,4 +34,7 @@ while True:
         agent.moveTowards(agent.x + 0, agent.y + 1)
     if keyboard.is_pressed("d"):
         agent.moveTowards(agent.x + 1, agent.y + 0)
+    if keyboard.is_pressed("space"):
+        agent.fire(True)
+
     agent.update()
