@@ -26,10 +26,11 @@ class Survivor:
                                  waitArenaConnection, verbosity, robotId,
                                  welcomePrint, sourcesdir)
 
-    self.type = "survivor"
-    self.__CRATE = 1
-    self.__LEGENDARY_CRATE = 2
-    self.__previous_box = 0
+    self.type : str = "survivor"
+    self.__CRATE : int = 1
+    self.__LEGENDARY_CRATE : int = 2
+    self.weapon = self.__agent.game["weapon"]
+    print(self.weapon)
 
 
   def move(self, dx: int, dy: int) -> None:
